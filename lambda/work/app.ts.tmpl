@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+import cdk = require('@aws-cdk/core');
+import { AppStack } from './app-stack';
+
+const app = new cdk.App();
+new AppStack(app, 'AppStack');

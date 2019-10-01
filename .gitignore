@@ -1,0 +1,4 @@
+lambda.zip
+node_modules
+*.js
+*.d.ts
