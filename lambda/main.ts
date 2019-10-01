@@ -4,7 +4,8 @@ import { AccountSetupStack } from './lib/account-setup-stack';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import * as fs from 'fs';
-
+import crypto = require('crypto');
+import { S3 } from 'aws-sdk';
 
 
 fs.copyFileSync('work/app.ts.tmpl', '/tmp/app.ts');
@@ -23,12 +24,14 @@ try {
   console.log(error.stdout.toString());
 }
 
+const s3 = new S3();
+
 export const handler = async (event: any = {}): Promise<any> => {
 
   console.log(event);
   const cdktool = path.join(process.cwd(), 'node_modules/aws-cdk/bin/cdk');
 
-  const responseCode = 200;
+  var responseCode = 200;
   
   //const responseBody = JSON.stringify(SynthUtils.toCloudFormation(stack))
   // const assembly = app.synth();
@@ -36,11 +39,14 @@ export const handler = async (event: any = {}): Promise<any> => {
 
   fs.writeFileSync('/tmp/app-stack.ts', event.body);
 
-
-  var responseBody = '';
+  var cf_template = "";
+  var share_code = "";
+  var responseBody = {};
 
   try {
-    responseBody = execSync('HOME=/tmp ' + cdktool + ' synth', {cwd: '/tmp'}).toString();
+    cf_template = execSync('HOME=/tmp ' + cdktool + ' synth', {cwd: '/tmp'}).toString();
+    share_code = crypto.createHash('md5').update(event.body).digest('hex');
+
   } catch (error) {
     console.log(error.status);
     console.log(error.message);
@@ -48,15 +54,42 @@ export const handler = async (event: any = {}): Promise<any> => {
     console.log(error.stdout.toString());
   }
 
-  console.log(responseBody);
+  var params_cf = {
+    Body: cf_template, 
+    Bucket: "www.play-with-cdk.com", 
+    Key: 'shared/' + share_code + '_cf',
+    ACL: 'public-read'
+  };
+
+  var params_code = {
+    Body: event.body, 
+    Bucket: "www.play-with-cdk.com", 
+    Key: 'shared/' + share_code + '_code',
+    ACL: 'public-read'
+  };
+
+  responseBody = {
+    cf_template: cf_template,
+    share_code: share_code
+  }
+
+  try {
+    await s3.putObject(params_cf).promise();
+    await s3.putObject(params_code).promise();
+  } catch (error){
+    console.log(error);
+    responseCode = 500;
+    responseBody = {}
+  }
 
   const response = {
     statusCode: responseCode,
-    body: responseBody,
+    body: JSON.stringify(responseBody),
     headers: {
       "Access-Control-Allow-Origin": '*'
     }
   };
 
+  console.log(response);
   return response;
 }

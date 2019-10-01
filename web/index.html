@@ -17,13 +17,17 @@
         <div style="width:100%; height:100%; border: 1px solid red; box-sizing: border-box;">
             <div style="float:left; width:50%">
                 <div id="editor">import cdk = require('@aws-cdk/core');
+
+// Add required imports, currently only @aws-cdk scoped packages are supported
 import { Bucket } from '@aws-cdk/aws-s3';
 import cloudtrail = require('@aws-cdk/aws-cloudtrail');
 
+// Keep the class name stable please
 export class AppStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
     
+        // Add your code here
         var bucket = Bucket.fromBucketName(this, 'CloudTrailBucket', 'mybucket');
 
         new cloudtrail.Trail(this, 'CloudTrail', {
@@ -31,25 +35,51 @@ export class AppStack extends cdk.Stack {
         isMultiRegionTrail: true
         });
 
+        // You should stop here
     }
 }</div><br />
-                <button onclick="callREST()">Synth</button>
+                <button onclick="synth()">Synth</button>
+                <div id="share_code"></div>
             </div>
             <div style="float:left; width:50%;"><pre><code class="language-yaml" id="output"></code></pre></div>
         </div> 
     </body>
 
     <script>
-            function callREST() {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("output").textContent = this.responseText;
-                    }
-                };
-                xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test", true);
-                xhttp.send(editor.getValue());
-            }
+        function synth() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    response = JSON.parse(this.responseText);
+                    document.getElementById("output").textContent = response.cf_template
+                    document.getElementById("share_code").innerHTML = '<a href="https://www.play-with-cdk.com?s=' + response.share_code + '">share</a>'
+                }
+            };
+            xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test/synth", true);
+            xhttp.send(editor.getValue());
+        }
+
+        function load_cf(hash) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("output").textContent = this.responseText
+                }
+            };
+            xhttp.open("GET", "https://www.play-with-cdk.com/shared/" + hash + '_cf', true);
+            xhttp.send();
+        }
+
+        function load_code(hash) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    editor.setValue(this.responseText);
+                }
+            };
+            xhttp.open("GET", "https://www.play-with-cdk.com/shared/" + hash + '_code', true);
+            xhttp.send();
+        }
     </script>
     <script>hljs.initHighlightingOnLoad();</script>
 
@@ -58,5 +88,12 @@ export class AppStack extends cdk.Stack {
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/typescript");
+
+        const params = new URLSearchParams(document.location.search);
+        const hash = params.get("s");
+        if(hash){
+            load_code(hash);
+            load_cf(hash);
+        }
     </script>
 </html>
