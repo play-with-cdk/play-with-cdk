@@ -7,9 +7,10 @@
 ```
 cd browser
 npm install -g browserify
-npm install tsify typescript
+npm install tsify typescript @aws-cdk/core @aws-cdk/aws-s3 @aws-cdk/aws-cloudtrail process
 browserify main.ts -t brfs -p [ tsify --noImplicitAny ]  > bundle.js
 ```
+then open `index.html` in a browser
 
 # build lambda / web frontend
 - misses infrastructure code for lambda and api gateway lambda proxy, everything done manually so far
