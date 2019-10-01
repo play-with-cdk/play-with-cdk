@@ -7,7 +7,7 @@
 ```
 cd browser
 npm install -g browserify
-npm install tsify typescript @aws-cdk/core @aws-cdk/aws-s3 @aws-cdk/aws-cloudtrail process
+npm ci
 browserify main.ts -t brfs -p [ tsify --noImplicitAny ]  > bundle.js
 ```
 then open `index.html` in a browser
