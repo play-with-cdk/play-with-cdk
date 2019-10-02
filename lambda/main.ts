@@ -1,14 +1,10 @@
 import cdk = require('@aws-cdk/core');
-//import { SynthUtils } from '@aws-cdk/assert';
-//import * as path from 'path';
 import { execSync } from 'child_process';
 import * as fs from 'fs';
 import crypto = require('crypto');
 import { S3 } from 'aws-sdk';
 import serialize = require('./lib/serialize');
 
-fs.copyFileSync('work/app.ts.tmpl', '/tmp/app.ts');
-fs.copyFileSync('work/cdk.json.tmpl','/tmp/cdk.json');
 fs.copyFileSync('work/tsconfig.json.tmpl','/tmp/tsconfig.json');
 fs.copyFileSync('work/package.json.tmpl','/tmp/package.json');
 fs.copyFileSync('work/package-lock.json.tmpl','/tmp/package-lock.json');
@@ -42,7 +38,15 @@ export const handler = async (event: any = {}): Promise<any> => {
       sourceType: "module",
     },
     rules: {
-        "no-process-env": "error"
+      "no-process-env": "error",
+      "no-process-exit": "error",
+      "no-path-concat": "error",
+      "no-restricted-imports": [ "error", {
+        "paths": ["assert","buffer","child_process","cluster","crypto","dgram","dns","domain","events","freelist","fs","http","https","module","net","os","path","punycode","querystring","readline","repl","smalloc","stream","string_decoder","sys","timers","tls","tracing","tty","url","util","vm","zlib"]
+      }],
+      "no-restricted-modules": [ "error", {
+        "paths": ["assert","buffer","child_process","cluster","crypto","dgram","dns","domain","events","freelist","fs","http","https","module","net","os","path","punycode","querystring","readline","repl","smalloc","stream","string_decoder","sys","timers","tls","tracing","tty","url","util","vm","zlib"]
+      }]
     }
   });
   const report = cli.executeOnText(event.body);
@@ -73,7 +77,7 @@ export const handler = async (event: any = {}): Promise<any> => {
     const app = new cdk.App();
     new module.AppStack(app, 'AppStack');
     const assembly = app.synth();
-    const cf_template = serialize.toYAML(assembly.getStack('AppStack').template);
+    cf_template = serialize.toYAML(assembly.getStack('AppStack').template);
 
     delete require.cache[require.resolve('/tmp/app-stack')]
   } catch (error){
