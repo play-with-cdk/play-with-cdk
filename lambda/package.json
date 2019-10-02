@@ -24,6 +24,9 @@
     "@types/js-yaml": "^3.12.1",
     "@types/node": "^12.7.8",
     "@types/yaml": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
+    "eslint": "^6.5.1",
     "source-map-support": "^0.5.9",
     "yaml": "^1.7.0"
   },

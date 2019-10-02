@@ -28,11 +28,44 @@ require('ts-node').register({ })
 
 export const handler = async (event: any = {}): Promise<any> => {
 
-  console.log(event);
-  fs.writeFileSync('/tmp/app-stack.ts', event.body);
-
   let responseCode = 200;
   let responseBody: any;
+
+  console.log(event);
+
+  const CLIEngine = require("eslint").CLIEngine;
+  const cli = new CLIEngine({
+    allowInlineConfig: false,
+    useEslintrc: false,
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+      sourceType: "module",
+    },
+    rules: {
+        "no-process-env": "error"
+    }
+  });
+  const report = cli.executeOnText(event.body);
+
+  console.log(JSON.stringify(report));
+
+  if (report.errorCount > 0){
+    responseBody = {
+      error: "Failed security check",
+      details: "Line " + report.results[0].messages[0].line + ": " + report.results[0].messages[0].message
+    }
+
+    const response = {
+      statusCode: 403,
+      body: JSON.stringify(responseBody),
+      headers: {
+        "Access-Control-Allow-Origin": '*'
+      }
+    };
+    return response;
+  }
+
+  fs.writeFileSync('/tmp/app-stack.ts', event.body);
 
   // Load the construct module, compile it, instantiate it, synth it and serialize it as yaml template
   let module = require('/tmp/app-stack');  
@@ -62,7 +95,8 @@ export const handler = async (event: any = {}): Promise<any> => {
 
   responseBody = {
     cf_template: cf_template,
-    share_code: share_code
+    share_code: share_code,
+    error: undefined
   }
 
   try {
@@ -71,7 +105,9 @@ export const handler = async (event: any = {}): Promise<any> => {
   } catch (error){
     console.log(error);
     responseCode = 500;
-    responseBody = {}
+    responseBody = {
+      error: "Internal error while storing results"
+    }
   }
 
   const response = {

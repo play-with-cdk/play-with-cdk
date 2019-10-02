@@ -53,7 +53,7 @@
             </div>
         </nav>
         <div class="container-fluid h-100">
-            <div class="row h-75"">
+            <div class="row h-75">
                 <div class="col-5">
                     <div class="h-100" id="editor">import cdk = require('@aws-cdk/core');
 
@@ -91,10 +91,22 @@ export class AppStack extends cdk.Stack {
                     <pre class="h-100"><code class="language-yaml h-100" id="output"></code></pre>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                        <div class="alert alert-primary" id="alert" role="alert">
+                                Hello!
+                        </div>
+                </div>
+            </div>
         </div> 
     </body>
 
     <script>
+        function alert(type, message){
+            document.getElementById("alert").classList.value = "alert alert-" + type;
+            document.getElementById("alert").innerHTML = message.replace(/\n/g, "<br />");
+        }
+
         function synth() {
             document.getElementById("spinner").style.visibility = "visible"
             var xhttp = new XMLHttpRequest();
@@ -104,6 +116,12 @@ export class AppStack extends cdk.Stack {
                     document.getElementById("output").textContent = response.cf_template
                     document.getElementById("share_code").innerHTML = '<a href="https://www.play-with-cdk.com?s=' + response.share_code + '">share</a>'
                     document.getElementById("spinner").style.visibility = "hidden";
+                    alert("success", "Synth successful");
+                }
+                if (this.readyState == 4 && this.status != 200) {
+                    response = JSON.parse(this.responseText);
+                    document.getElementById("spinner").style.visibility = "hidden";
+                    alert("danger", response.error + "\n" + response.details );
                 }
             };
             xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test/synth", true);
