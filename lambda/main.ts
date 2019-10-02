@@ -1,12 +1,11 @@
 import cdk = require('@aws-cdk/core');
-import { SynthUtils } from '@aws-cdk/assert';
-import { AccountSetupStack } from './lib/account-setup-stack';
-import * as path from 'path';
+//import { SynthUtils } from '@aws-cdk/assert';
+//import * as path from 'path';
 import { execSync } from 'child_process';
 import * as fs from 'fs';
 import crypto = require('crypto');
 import { S3 } from 'aws-sdk';
-
+import serialize = require('./lib/serialize');
 
 fs.copyFileSync('work/app.ts.tmpl', '/tmp/app.ts');
 fs.copyFileSync('work/cdk.json.tmpl','/tmp/cdk.json');
@@ -15,7 +14,7 @@ fs.copyFileSync('work/package.json.tmpl','/tmp/package.json');
 fs.copyFileSync('work/package-lock.json.tmpl','/tmp/package-lock.json');
 
 try {
-  var out = execSync('HOME=/tmp npm ci', {cwd: '/tmp'}).toString();
+  let out = execSync('HOME=/tmp npm ci', {cwd: '/tmp'}).toString();
   console.log(out)
 } catch (error) {
   console.log(error.status);
@@ -25,34 +24,27 @@ try {
 }
 
 const s3 = new S3();
+require('ts-node').register({ })
 
 export const handler = async (event: any = {}): Promise<any> => {
 
   console.log(event);
-  const cdktool = path.join(process.cwd(), 'node_modules/aws-cdk/bin/cdk');
-
-  var responseCode = 200;
-  
-  //const responseBody = JSON.stringify(SynthUtils.toCloudFormation(stack))
-  // const assembly = app.synth();
-  //const responseBody = JSON.stringify(assembly.getStack('AccountSetupStack').template);
-
   fs.writeFileSync('/tmp/app-stack.ts', event.body);
 
-  var cf_template = "";
-  var share_code = "";
-  var responseBody = {};
+  let responseCode = 200;
+  let responseBody: any;
 
-  try {
-    cf_template = execSync('HOME=/tmp ' + cdktool + ' synth', {cwd: '/tmp'}).toString();
-    share_code = crypto.createHash('md5').update(event.body).digest('hex');
+  // Load the construct module, compile it, instantiate it, synth it and serialize it as yaml template
+  let module = require('/tmp/app-stack');  
+  const app = new cdk.App();
+  new module.AppStack(app, 'AppStack');
+  const assembly = app.synth();
+  const cf_template = serialize.toYAML(assembly.getStack('AppStack').template);
 
-  } catch (error) {
-    console.log(error.status);
-    console.log(error.message);
-    console.log(error.stderr.toString());
-    console.log(error.stdout.toString());
-  }
+  delete require.cache[require.resolve('/tmp/app-stack')]
+
+  // Generate the md5 hash based on the input code
+  let share_code = crypto.createHash('md5').update(event.body).digest('hex');
 
   var params_cf = {
     Body: cf_template, 

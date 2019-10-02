@@ -21,8 +21,11 @@
     "@aws-cdk/aws-iam": "^1.10.0",
     "@aws-cdk/aws-route53": "^1.10.0",
     "@aws-cdk/core": "^1.10.0",
+    "@types/js-yaml": "^3.12.1",
     "@types/node": "^12.7.8",
-    "source-map-support": "^0.5.9"
+    "@types/yaml": "^1.0.2",
+    "source-map-support": "^0.5.9",
+    "yaml": "^1.7.0"
   },
   "jest": {
     "moduleFileExtensions": [
