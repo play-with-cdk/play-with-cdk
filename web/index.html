@@ -121,7 +121,7 @@ export class AppStack extends cdk.Stack {
                 if (this.readyState == 4 && this.status != 200) {
                     response = JSON.parse(this.responseText);
                     document.getElementById("spinner").style.visibility = "hidden";
-                    alert("danger", response.error + "\n" + response.details );
+                    alert("danger", response.error + "\n" + JSON.stringify(response.details));
                 }
             };
             xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test/synth", true);

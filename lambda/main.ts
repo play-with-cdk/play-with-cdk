@@ -29,7 +29,7 @@ require('ts-node').register({ })
 export const handler = async (event: any = {}): Promise<any> => {
 
   let responseCode = 200;
-  let responseBody: any;
+  let responseBody, cf_template: any;
 
   console.log(event);
 
@@ -67,14 +67,31 @@ export const handler = async (event: any = {}): Promise<any> => {
 
   fs.writeFileSync('/tmp/app-stack.ts', event.body);
 
-  // Load the construct module, compile it, instantiate it, synth it and serialize it as yaml template
-  let module = require('/tmp/app-stack');  
-  const app = new cdk.App();
-  new module.AppStack(app, 'AppStack');
-  const assembly = app.synth();
-  const cf_template = serialize.toYAML(assembly.getStack('AppStack').template);
+  try {
+    // Load the construct module, compile it, instantiate it, synth it and serialize it as yaml template
+    let module = require('/tmp/app-stack');
+    const app = new cdk.App();
+    new module.AppStack(app, 'AppStack');
+    const assembly = app.synth();
+    const cf_template = serialize.toYAML(assembly.getStack('AppStack').template);
 
-  delete require.cache[require.resolve('/tmp/app-stack')]
+    delete require.cache[require.resolve('/tmp/app-stack')]
+  } catch (error){
+    console.log(error);
+    responseCode = 500;
+    responseBody = {
+      error: "Error during compile and synth",
+      details: error
+    }
+    const response = {
+      statusCode: responseCode,
+      body: JSON.stringify(responseBody),
+      headers: {
+        "Access-Control-Allow-Origin": '*'
+      }
+    };
+    return response;
+  }
 
   // Generate the md5 hash based on the input code
   let share_code = crypto.createHash('md5').update(event.body).digest('hex');
