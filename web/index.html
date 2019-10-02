@@ -1,22 +1,61 @@
+<!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Play With CDK</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
-        <style type="text/css" media="screen">
+        <!-- <style type="text/css" media="screen">
             #editor { 
  
                 width: 100%;
                 height: 90%;
             }
-        </style>
+        </style> -->
+
+        <style>
+        html,body {
+            height:100%;
+            max-height:100%;
+        }
+    </style>
 
     </head>
     <body>
-        <div style="width:100%; height:100%; border: 1px solid red; box-sizing: border-box;">
-            <div style="float:left; width:50%">
-                <div id="editor">import cdk = require('@aws-cdk/core');
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Play with CDK</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li> -->
+                    <!-- <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li> -->
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid h-100">
+            <div class="row h-75"">
+                <div class="col-5">
+                    <div class="h-100" id="editor">import cdk = require('@aws-cdk/core');
 
 // Add required imports, currently only @aws-cdk scoped packages are supported
 import { Bucket } from '@aws-cdk/aws-s3';
@@ -37,22 +76,34 @@ export class AppStack extends cdk.Stack {
 
         // You should stop here
     }
-}</div><br />
-                <button onclick="synth()">Synth</button>
-                <div id="share_code"></div>
+}</div>
+                </div>
+                <div class="col-2 align-self-start">
+                    <center>
+                        <button type="button" class="btn btn-primary" onclick="synth()">
+                            Synth
+                            <span class="spinner-grow spinner-grow-sm" id="spinner" role="status" aria-hidden="true" style="visibility: hidden"></span>
+                        </button>
+                        <div id="share_code"></div>
+                    </center>
+                </div>
+                <div class="col-5">
+                    <pre class="h-100"><code class="language-yaml h-100" id="output"></code></pre>
+                </div>
             </div>
-            <div style="float:left; width:50%;"><pre><code class="language-yaml" id="output"></code></pre></div>
         </div> 
     </body>
 
     <script>
         function synth() {
+            document.getElementById("spinner").style.visibility = "visible"
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     response = JSON.parse(this.responseText);
                     document.getElementById("output").textContent = response.cf_template
                     document.getElementById("share_code").innerHTML = '<a href="https://www.play-with-cdk.com?s=' + response.share_code + '">share</a>'
+                    document.getElementById("spinner").style.visibility = "hidden";
                 }
             };
             xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test/synth", true);
