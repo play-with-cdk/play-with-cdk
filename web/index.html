@@ -111,6 +111,8 @@ export class AppStack extends cdk.Stack {
             document.getElementById("spinner").style.visibility = "visible"
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
+                console.log(this.readyState)
+                console.log(this.status)
                 if (this.readyState == 4 && this.status == 200) {
                     response = JSON.parse(this.responseText);
                     document.getElementById("output").textContent = response.cf_template
@@ -119,8 +121,13 @@ export class AppStack extends cdk.Stack {
                     alert("success", "Synth successful");
                 }
                 if (this.readyState == 4 && this.status != 200) {
-                    response = JSON.parse(this.responseText);
                     document.getElementById("spinner").style.visibility = "hidden";
+                    response = "";
+                    if (this.responseText) {
+                       response = JSON.parse(this.responseText);
+                    } else {
+                        response = this.statusText
+                    }
                     alert("danger", response.error + "\n" + JSON.stringify(response.details));
                 }
             };

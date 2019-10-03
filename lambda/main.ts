@@ -9,6 +9,8 @@ fs.copyFileSync('work/tsconfig.json.tmpl','/tmp/tsconfig.json');
 fs.copyFileSync('work/package.json.tmpl','/tmp/package.json');
 fs.copyFileSync('work/package-lock.json.tmpl','/tmp/package-lock.json');
 
+//fs.renameSync('work/node_modules','/tmp/node_modules');
+
 try {
   let out = execSync('HOME=/tmp npm ci', {cwd: '/tmp'}).toString();
   console.log(out)
