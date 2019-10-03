@@ -122,15 +122,15 @@ export class AppStack extends cdk.Stack {
                 }
                 if (this.readyState == 4 && this.status != 200) {
                     document.getElementById("spinner").style.visibility = "hidden";
-                    response = "";
-                    if (this.responseText) {
-                       response = JSON.parse(this.responseText);
-                    } else {
-                        response = this.statusText
+                    try {
+                        response = JSON.parse(this.responseText);
+                        alert("danger", response.error + "\n" + JSON.stringify(response.details));
+                    } catch(err) {
+                        alert("danger", this.responseText);
                     }
-                    alert("danger", response.error + "\n" + JSON.stringify(response.details));
                 }
             };
+
             xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test/synth", true);
             xhttp.send(editor.getValue());
         }
