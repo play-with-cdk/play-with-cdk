@@ -18,6 +18,8 @@ then open `index.html` in a browser
 
 ```
 cd lambda
+npm ci
+docker run --rm -v ${PWD}:/app hochzehn/node-prune
 npm run-script build
 zip -q -r ../lambda.zip .
 ```

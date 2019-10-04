@@ -1,25 +1,14 @@
 import cdk = require('@aws-cdk/core');
 import { execSync } from 'child_process';
 import * as fs from 'fs';
+import * as process from 'process';
 import crypto = require('crypto');
 import { S3 } from 'aws-sdk';
 import serialize = require('./lib/serialize');
 
 fs.copyFileSync('work/tsconfig.json.tmpl','/tmp/tsconfig.json');
-fs.copyFileSync('work/package.json.tmpl','/tmp/package.json');
-fs.copyFileSync('work/package-lock.json.tmpl','/tmp/package-lock.json');
 
-//fs.renameSync('work/node_modules','/tmp/node_modules');
-
-try {
-  let out = execSync('HOME=/tmp npm ci', {cwd: '/tmp'}).toString();
-  console.log(out)
-} catch (error) {
-  console.log(error.status);
-  console.log(error.message);
-  console.log(error.stderr.toString());
-  console.log(error.stdout.toString());
-}
+fs.symlinkSync(process.cwd() + '/node_modules', '/tmp/node_modules')
 
 const s3 = new S3();
 require('ts-node').register({ })
