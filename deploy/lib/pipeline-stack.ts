@@ -39,7 +39,7 @@ export class PipelineStack extends Stack {
         artifacts: {
           'base-directory': 'deploy/dist',
           files: [
-            'LambdaStack.template.json',
+            'pwcdk.template.json',
           ],
         },
       }),
@@ -115,7 +115,7 @@ export class PipelineStack extends Stack {
           actions: [
             new codepipeline_actions.CloudFormationCreateUpdateStackAction({
               actionName: 'Lambda_CFN_Deploy',
-              templatePath: cdkBuildOutput.atPath('LambdaStack.template.json'),
+              templatePath: cdkBuildOutput.atPath('pwcdk.template.json'),
               stackName: 'LambdaDeploymentStack',
               adminPermissions: true,
               parameterOverrides: {
