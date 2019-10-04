@@ -32,7 +32,13 @@ export class Pwcdk extends Stack {
     const api = new apigateway.LambdaRestApi(this, "pwcdk", {
       handler: func,
       proxy: false,
-      restApiName: "Play with CDK"
+      restApiName: "pwcdk",
+      options: {
+        deployOptions:{
+          throttlingRateLimit: 1,
+          throttlingBurstLimit: 1
+        }
+      }
     });
 
     const synth = api.root.addResource('synth');
