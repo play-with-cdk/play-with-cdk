@@ -66,9 +66,9 @@ export const handler = async (event: any = {}): Promise<any> => {
 
   try {
     // Load the construct module, compile it, instantiate it, synth it and serialize it as yaml template
-    let module = require('/tmp/app-stack');
+    let mod = require('/tmp/app-stack');
     const app = new cdk.App();
-    new module.AppStack(app, 'AppStack');
+    new mod.AppStack(app, 'AppStack');
     const assembly = app.synth();
     cf_template = serialize.toYAML(assembly.getStack('AppStack').template);
 
