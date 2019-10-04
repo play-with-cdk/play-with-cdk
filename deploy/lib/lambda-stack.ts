@@ -15,7 +15,7 @@ export class Pwcdk extends Stack {
       code: this.lambdaCode,
       handler: 'main.handler',
       runtime: lambda.Runtime.NODEJS_10_X,
-      timeout: Duration.seconds(10)
+      timeout: Duration.seconds(30)
     });
     
     const version = func.addVersion(new Date().toISOString());
@@ -44,6 +44,7 @@ export class Pwcdk extends Stack {
     const synth = api.root.addResource('synth');
     synth.addMethod("POST");
 
+    addCorsOptions(api.root);
     addCorsOptions(synth);
   }
 }
