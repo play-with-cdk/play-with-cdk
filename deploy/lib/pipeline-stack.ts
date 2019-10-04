@@ -26,7 +26,7 @@ export class PipelineStack extends Stack {
           install: {
             commands: [
               'cd deploy',
-              'npm install'
+              'npm ci'
             ]
           },
           build: {
@@ -54,11 +54,14 @@ export class PipelineStack extends Stack {
           install: {
             commands: [
               'cd lambda',
-              'npm install',
+              'npm ci',
             ],
           },
           build: {
-            commands: 'npm run build',
+            commands: [
+              'npm run build',
+              'docker run --rm -v ${PWD}:/app hochzehn/node-prune'
+            ]
           },
         },
         artifacts: {
