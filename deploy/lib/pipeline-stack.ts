@@ -82,7 +82,8 @@ export class PipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2,
+        privileged: true
       },
     });
 
