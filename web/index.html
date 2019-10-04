@@ -131,7 +131,8 @@ export class AppStack extends cdk.Stack {
                 }
             };
 
-            xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test/synth", true);
+            //xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test/synth", true);
+            xhttp.open("POST", "https://fvml9pequc.execute-api.eu-west-1.amazonaws.com/prod/synth", true);
             xhttp.send(editor.getValue());
         }
 

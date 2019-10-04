@@ -74,6 +74,8 @@ export const handler = async (event: any = {}): Promise<any> => {
 
     delete require.cache[require.resolve('/tmp/app-stack')]
   } catch (error){
+    let out = execSync('ls -ltrh', {cwd: '/tmp'}).toString();
+    console.log(out)
     console.log(error);
     responseCode = 500;
     responseBody = {
