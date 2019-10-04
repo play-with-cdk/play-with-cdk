@@ -76,6 +76,10 @@ export const handler = async (event: any = {}): Promise<any> => {
   } catch (error){
     let out = execSync('ls -ltrh', {cwd: '/tmp'}).toString();
     console.log(out)
+    out = execSync('node --version', {cwd: '/tmp'}).toString();
+    console.log(out)
+    out = execSync('ls -ltrh', {cwd: '/var/task'}).toString();
+    console.log(out)
     console.log(error);
     responseCode = 500;
     responseBody = {
