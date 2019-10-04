@@ -65,6 +65,8 @@ export class PipelineStack extends Stack {
           'base-directory': 'lambda',
           files: [
             'main.js',
+            'lib/**/*',
+            'work/**/*',
             'node_modules/**/*',
           ],
         },
@@ -116,7 +118,7 @@ export class PipelineStack extends Stack {
             new codepipeline_actions.CloudFormationCreateUpdateStackAction({
               actionName: 'Lambda_CFN_Deploy',
               templatePath: cdkBuildOutput.atPath('pwcdk.template.json'),
-              stackName: 'LambdaDeploymentStack',
+              stackName: 'pwcdk',
               adminPermissions: true,
               parameterOverrides: {
                 ...props.lambdaCode.assign(lambdaBuildOutput.s3Location),
