@@ -8,7 +8,9 @@ import serialize = require('./lib/serialize');
 
 fs.copyFileSync('work/tsconfig.json.tmpl','/tmp/tsconfig.json');
 
-fs.symlinkSync(process.cwd() + '/node_modules', '/tmp/node_modules')
+if (!fs.existsSync('/tmp/node_modules')){
+  fs.symlinkSync(process.cwd() + '/node_modules', '/tmp/node_modules')
+}
 
 const s3 = new S3();
 require('ts-node').register({ })
