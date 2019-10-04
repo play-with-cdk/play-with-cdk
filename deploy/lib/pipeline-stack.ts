@@ -24,6 +24,9 @@ export class PipelineStack extends Stack {
         version: '0.2',
         phases: {
           install: {
+            "runtime-versions": {
+              nodejs: 10
+            },
             commands: [
               'cd deploy',
               'npm ci'
@@ -44,7 +47,7 @@ export class PipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2
       },
     });
     const lambdaBuild = new codebuild.PipelineProject(this, 'LambdaBuild', {
@@ -52,6 +55,10 @@ export class PipelineStack extends Stack {
         version: '0.2',
         phases: {
           install: {
+            "runtime-versions": {
+              nodejs: 10,
+              docker: 18
+            },
             commands: [
               'cd lambda',
               'npm ci',
@@ -75,7 +82,7 @@ export class PipelineStack extends Stack {
         },
       }),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.UBUNTU_14_04_NODEJS_10_14_1
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2
       },
     });
 
