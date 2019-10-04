@@ -80,6 +80,8 @@ export const handler = async (event: any = {}): Promise<any> => {
     console.log(out)
     out = execSync('ls -ltrh', {cwd: '/var/task'}).toString();
     console.log(out)
+    console.log(fs.readFileSync('/tmp/app-stack.ts'));
+    console.log(fs.readFileSync('/var/task/main.js'));
     console.log(error);
     responseCode = 500;
     responseBody = {
