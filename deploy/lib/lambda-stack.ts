@@ -15,7 +15,8 @@ export class Pwcdk extends Stack {
       code: this.lambdaCode,
       handler: 'main.handler',
       runtime: lambda.Runtime.NODEJS_10_X,
-      timeout: Duration.seconds(60)
+      timeout: Duration.seconds(60),
+      memorySize: 512
     });
     
     const version = func.addVersion(new Date().toISOString());
