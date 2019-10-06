@@ -14,7 +14,14 @@ export class Pwcdk extends Stack {
 
     this.lambdaCode = lambda.Code.cfnParameters();
 
-    const bucket = s3.Bucket.fromBucketName(this, 'Bucket', 'www.play-with-cdk.com');
+    //const bucket = s3.Bucket.fromBucketName(this, 'Bucket', 'www.play-with-cdk.com');
+
+    const bucket = new s3.Bucket(this, 'Bucket', {
+      bucketName: 'play-with-cdk.com',
+      websiteIndexDocument: 'index.html'
+    });
+
+    bucket.grantPublicAccess();
 
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
