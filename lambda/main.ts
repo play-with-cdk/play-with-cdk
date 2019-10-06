@@ -103,14 +103,14 @@ export const handler = async (event: any = {}): Promise<any> => {
 
   var params_cf = {
     Body: cf_template, 
-    Bucket: "www.play-with-cdk.com", 
+    Bucket: "play-with-cdk.com", 
     Key: 'shared/' + share_code + '_cf',
     ACL: 'public-read'
   };
 
   var params_code = {
     Body: event.body, 
-    Bucket: "www.play-with-cdk.com", 
+    Bucket: "play-with-cdk.com", 
     Key: 'shared/' + share_code + '_code',
     ACL: 'public-read'
   };
