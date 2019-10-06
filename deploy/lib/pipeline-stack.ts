@@ -4,6 +4,7 @@ import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 import lambda = require('@aws-cdk/aws-lambda');
 import s3 = require('@aws-cdk/aws-s3');
 import { App, Stack, StackProps, SecretValue, PhysicalName, RemovalPolicy } from '@aws-cdk/core';
+import { Bucket } from '@aws-cdk/aws-s3';
 
 export interface PipelineStackProps extends StackProps {
   readonly lambdaCode: lambda.CfnParametersCode;
@@ -88,9 +89,35 @@ export class PipelineStack extends Stack {
       },
     });
 
+    const websiteBuild = new codebuild.PipelineProject(this, 'WebsiteBuild', {
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: '0.2',
+        phases: {
+          install: {
+            "runtime-versions": {
+              nodejs: 10,
+            }
+          }
+        }, 
+        artifacts: {
+          'base-directory': 'web',
+          files: [
+            'index.html'
+          ]
+        }
+      }),
+      environment: {
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2
+      },
+    });
+
+
+
     const sourceOutput = new codepipeline.Artifact();
     const cdkBuildOutput = new codepipeline.Artifact('CdkBuildOutput');
     const lambdaBuildOutput = new codepipeline.Artifact('LambdaBuildOutput');
+    const websiteBuildOutput = new codepipeline.Artifact('WebsiteBuildOutput');
+
     new codepipeline.Pipeline(this, 'Pipeline', {
       artifactBucket: artifactBucket,
       stages: [
@@ -122,6 +149,12 @@ export class PipelineStack extends Stack {
               input: sourceOutput,
               outputs: [cdkBuildOutput],
             }),
+            new codepipeline_actions.CodeBuildAction({
+              actionName: 'Website_Build',
+              project: websiteBuild,
+              input: sourceOutput,
+              outputs: [websiteBuildOutput],
+            }),
           ],
         },
         {
@@ -136,7 +169,14 @@ export class PipelineStack extends Stack {
                 ...props.lambdaCode.assign(lambdaBuildOutput.s3Location),
               },
               extraInputs: [lambdaBuildOutput],
+              runOrder: 1
             }),
+            new codepipeline_actions.S3DeployAction({
+              actionName: 'Website_Deploy',
+              bucket: s3.Bucket.fromBucketName(this, 'WebsiteBucket', 'play-with-cdk.com'),
+              input: websiteBuildOutput,
+              runOrder: 2
+            })
           ],
         },
       ],
