@@ -75,6 +75,7 @@ export class PipelineStack extends Stack {
           'base-directory': 'lambda',
           files: [
             'main.js',
+            'tsconfig.json',
             'lib/**/*',
             'work/**/*',
             'node_modules/**/*',
