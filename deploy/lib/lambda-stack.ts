@@ -1,7 +1,10 @@
 import codedeploy = require('@aws-cdk/aws-codedeploy');
 import lambda = require('@aws-cdk/aws-lambda');
+import s3 = require('@aws-cdk/aws-s3');
 import apigateway = require("@aws-cdk/aws-apigateway");
 import { App, Stack, StackProps, Duration } from '@aws-cdk/core';
+import { ImagePullPrincipalType } from '@aws-cdk/aws-codebuild';
+import { PolicyStatement } from '@aws-cdk/aws-iam';
 
 export class Pwcdk extends Stack {
   public readonly lambdaCode: lambda.CfnParametersCode;
@@ -11,6 +14,8 @@ export class Pwcdk extends Stack {
 
     this.lambdaCode = lambda.Code.cfnParameters();
 
+    const bucket = s3.Bucket.fromBucketName(this, 'Bucket', 'www.play-with-cdk.com');
+
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
       handler: 'main.handler',
@@ -18,6 +23,8 @@ export class Pwcdk extends Stack {
       timeout: Duration.seconds(60),
       memorySize: 512
     });
+ 
+    bucket.grantPut(func);
     
     const version = func.addVersion(new Date().toISOString());
     const alias = new lambda.Alias(this, 'LambdaAlias', {
