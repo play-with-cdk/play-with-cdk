@@ -4,7 +4,7 @@ import s3 = require('@aws-cdk/aws-s3');
 import apigateway = require("@aws-cdk/aws-apigateway");
 import { App, Stack, StackProps, Duration } from '@aws-cdk/core';
 import { ImagePullPrincipalType } from '@aws-cdk/aws-codebuild';
-import { PolicyStatement } from '@aws-cdk/aws-iam';
+import { PolicyStatement, AccountRootPrincipal } from '@aws-cdk/aws-iam';
 
 export class Pwcdk extends Stack {
   public readonly lambdaCode: lambda.CfnParametersCode;
@@ -22,6 +22,11 @@ export class Pwcdk extends Stack {
     });
 
     bucket.grantPublicAccess();
+    bucket.addToResourcePolicy(new PolicyStatement({
+      actions: ['s3:*'],
+      resources: [bucket.bucketArn],
+      principals: [new AccountRootPrincipal()]
+    }))
 
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
