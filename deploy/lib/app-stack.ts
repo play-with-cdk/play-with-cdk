@@ -28,6 +28,12 @@ export class Pwcdk extends Stack {
       principals: [new AccountRootPrincipal()]
     }))
 
+    bucket.addToResourcePolicy(new PolicyStatement({
+      actions: ['s3:*'],
+      resources: [bucket.bucketArn + '/*'],
+      principals: [new AccountRootPrincipal()]
+    }))
+
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
       handler: 'main.handler',
