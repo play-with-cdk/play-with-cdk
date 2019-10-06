@@ -116,7 +116,7 @@ export class AppStack extends cdk.Stack {
                 if (this.readyState == 4 && this.status == 200) {
                     response = JSON.parse(this.responseText);
                     document.getElementById("output").textContent = response.cf_template
-                    document.getElementById("share_code").innerHTML = '<a href="https://www.play-with-cdk.com?s=' + response.share_code + '">share</a>'
+                    document.getElementById("share_code").innerHTML = '<a href="https://play-with-cdk.com?s=' + response.share_code + '">share</a>'
                     document.getElementById("spinner").style.visibility = "hidden";
                     alert("success", "Synth successful");
                 }
@@ -130,8 +130,6 @@ export class AppStack extends cdk.Stack {
                     }
                 }
             };
-
-            //xhttp.open("POST", "https://5p3700lw85.execute-api.eu-west-1.amazonaws.com/test/synth", true);
             xhttp.open("POST", "https://fvml9pequc.execute-api.eu-west-1.amazonaws.com/prod/synth", true);
             xhttp.send(editor.getValue());
         }
@@ -143,7 +141,7 @@ export class AppStack extends cdk.Stack {
                     document.getElementById("output").textContent = this.responseText
                 }
             };
-            xhttp.open("GET", "https://www.play-with-cdk.com/shared/" + hash + '_cf', true);
+            xhttp.open("GET", "https://play-with-cdk.com/shared/" + hash + '_cf', true);
             xhttp.send();
         }
 
@@ -154,7 +152,7 @@ export class AppStack extends cdk.Stack {
                     editor.setValue(this.responseText);
                 }
             };
-            xhttp.open("GET", "https://www.play-with-cdk.com/shared/" + hash + '_code', true);
+            xhttp.open("GET", "https://play-with-cdk.com/shared/" + hash + '_code', true);
             xhttp.send();
         }
     </script>
