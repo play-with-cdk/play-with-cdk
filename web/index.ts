@@ -61,10 +61,11 @@ export class AppStack extends cdk.Stack {
 
 
 declare global {
-  interface Window { editor: any; output: any; }
+  interface Window { editor: any; output: any; synth: any; }
 }
 window.editor = window.editor || {};
 window.output = window.output || {};
+window.synth = window.synth || {};
 
 window.editor = monaco.editor.create(document.getElementById('editor'), {
   // value: ["function x() {", '\tconsole.log("Hello world!");', "}"].join("\n"),
@@ -74,7 +75,7 @@ window.editor = monaco.editor.create(document.getElementById('editor'), {
 });
 
 window.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function() {
-	synth();
+	window.synth();
 });
 
 window.output = monaco.editor.create(document.getElementById('output'), {
@@ -96,7 +97,7 @@ function alert(type, message){
   document.getElementById("alert").innerHTML = message.replace(/\n/g, "<br />");
 }
 
-function synth() {
+window.synth = function() {
   document.getElementById("spinner").style.visibility = "visible"
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
