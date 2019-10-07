@@ -1,3 +1,2 @@
 dist
 !webpack.config.js
-!typings.js
