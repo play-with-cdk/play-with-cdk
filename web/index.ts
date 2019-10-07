@@ -51,8 +51,8 @@ export class AppStack extends cdk.Stack {
         var bucket = Bucket.fromBucketName(this, 'CloudTrailBucket', 'mybucket');
 
         new cloudtrail.Trail(this, 'CloudTrail', {
-        bucket: bucket,
-        isMultiRegionTrail: true
+          bucket: bucket,
+          isMultiRegionTrail: true
         });
 
         // You should stop here
