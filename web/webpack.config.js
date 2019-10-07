@@ -1,10 +1,11 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
-    target: 'web',
-	entry: {
+  mode: 'development',
+  target: 'web',
+  entry: {
 		"app": './index.ts',
 		"editor.worker": 'monaco-editor/esm/vs/editor/editor.worker.js',
     "ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker'
@@ -28,6 +29,15 @@ module.exports = {
           { from: 'index.html' },
           { from: 'launch-stack.svg' }
         ]),
+        new CompressionPlugin({
+          filename: '[path].br[query]',
+          algorithm: 'brotliCompress',
+          test: /\.js$/,
+          compressionOptions: { level: 11 },
+          threshold: 10240,
+          minRatio: 0.8,
+          deleteOriginalAssets: true,
+        }),
       ],
 	module: {
 		rules: [
@@ -49,5 +59,5 @@ module.exports = {
               flags: 'g'
             }
         }]
-	},
+  }
 };

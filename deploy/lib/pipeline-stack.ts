@@ -5,6 +5,7 @@ import lambda = require('@aws-cdk/aws-lambda');
 import s3 = require('@aws-cdk/aws-s3');
 import { App, Stack, StackProps, SecretValue, PhysicalName, RemovalPolicy } from '@aws-cdk/core';
 import { Bucket } from '@aws-cdk/aws-s3';
+import { PolicyStatement, Effect } from '@aws-cdk/aws-iam';
 
 export interface PipelineStackProps extends StackProps {
   readonly lambdaCode: lambda.CfnParametersCode;
@@ -89,7 +90,7 @@ export class PipelineStack extends Stack {
       },
     });
 
-    const websiteBuild = new codebuild.PipelineProject(this, 'WebsiteBuild', {
+    const websiteBuildDeploy = new codebuild.PipelineProject(this, 'WebsiteBuildDeploy', {
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
@@ -105,15 +106,11 @@ export class PipelineStack extends Stack {
           build: {
             commands: [
               './generate_typings.sh',
-              'npm run build'
+              'npm run build',
+              'aws s3 sync dist s3://play-with-cdk.com/ --exclude "*" --include "*.js.br" --content-type "application/javascript" --content-encoding "br"',
+              'aws s3 sync dist s3://play-with-cdk.com/ --exclude "*.js.br"'
             ]
           }
-        }, 
-        artifacts: {
-          'base-directory': 'web/dist',
-          files: [
-            '*'
-          ]
         }
       }),
       environment: {
@@ -121,12 +118,23 @@ export class PipelineStack extends Stack {
       },
     });
 
+    const websiteBucket = s3.Bucket.fromBucketName(this, 'WebsiteBucket', 'play-with-cdk.com');
+
+    websiteBuildDeploy.addToRolePolicy(new PolicyStatement({
+      actions: ['s3:PutObject'],
+      resources: [ websiteBucket.bucketArn + '/*' ],
+      effect: Effect.ALLOW
+    }))
+    websiteBuildDeploy.addToRolePolicy(new PolicyStatement({
+      actions: ['s3:ListBucket'],
+      resources: [ websiteBucket.bucketArn ],
+      effect: Effect.ALLOW
+    }))
 
 
     const sourceOutput = new codepipeline.Artifact();
     const cdkBuildOutput = new codepipeline.Artifact('CdkBuildOutput');
     const lambdaBuildOutput = new codepipeline.Artifact('LambdaBuildOutput');
-    const websiteBuildOutput = new codepipeline.Artifact('WebsiteBuildOutput');
 
     new codepipeline.Pipeline(this, 'Pipeline', {
       artifactBucket: artifactBucket,
@@ -160,10 +168,9 @@ export class PipelineStack extends Stack {
               outputs: [cdkBuildOutput],
             }),
             new codepipeline_actions.CodeBuildAction({
-              actionName: 'Website_Build',
-              project: websiteBuild,
-              input: sourceOutput,
-              outputs: [websiteBuildOutput],
+              actionName: 'Website_Build_Deploy',
+              project: websiteBuildDeploy,
+              input: sourceOutput
             }),
           ],
         },
@@ -179,13 +186,6 @@ export class PipelineStack extends Stack {
                 ...props.lambdaCode.assign(lambdaBuildOutput.s3Location),
               },
               extraInputs: [lambdaBuildOutput],
-              runOrder: 1
-            }),
-            new codepipeline_actions.S3DeployAction({
-              actionName: 'Website_Deploy',
-              bucket: s3.Bucket.fromBucketName(this, 'WebsiteBucket', 'play-with-cdk.com'),
-              input: websiteBuildOutput,
-              runOrder: 2
             })
           ],
         },
