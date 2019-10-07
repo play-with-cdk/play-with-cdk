@@ -31,6 +31,7 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   // module: monaco.languages.typescript.ModuleKind.CommonJS,
   moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
   noEmit: true,
+  lib: [ 'es6' ]
 });
 
 //monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
@@ -67,5 +68,6 @@ window.editor = window.editor || {};
 window.editor = monaco.editor.create(document.getElementById('editor'), {
   // value: ["function x() {", '\tconsole.log("Hello world!");', "}"].join("\n"),
   // language: "typescript",
-  model: monaco.editor.createModel(jsCode,"typescript", monaco.Uri.parse("file:///main.tsx"))
+  model: monaco.editor.createModel(jsCode,"typescript", monaco.Uri.parse("file:///main.tsx")),
+  theme: 'vs-dark'
 });
