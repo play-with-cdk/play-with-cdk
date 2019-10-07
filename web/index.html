@@ -83,8 +83,6 @@
             document.getElementById("spinner").style.visibility = "visible"
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                console.log(this.readyState)
-                console.log(this.status)
                 if (this.readyState == 4 && this.status == 200) {
                     response = JSON.parse(this.responseText);
                     document.getElementById("output").textContent = response.cf_template

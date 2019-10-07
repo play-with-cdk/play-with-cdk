@@ -88,7 +88,7 @@ export const handler = async (event: any = {}): Promise<any> => {
     responseCode = 500;
     responseBody = {
       error: "Error during compile and synth",
-      details: error
+      details: error.toString()
     }
     const response = {
       statusCode: responseCode,
