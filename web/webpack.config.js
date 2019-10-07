@@ -25,7 +25,8 @@ module.exports = {
     },
     plugins: [
         new CopyPlugin([
-          { from: 'index.html' }
+          { from: 'index.html' },
+          { from: 'launch-stack.svg' }
         ]),
       ],
 	module: {

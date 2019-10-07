@@ -105,7 +105,7 @@ window.synth = function() {
           const response = JSON.parse(this.responseText);
           window.output.setValue(response.cf_template);
           document.getElementById("share_code").innerHTML = '<a href="https://play-with-cdk.com?s=' + response.share_code + '">share</a>'
-          document.getElementById("deploy").innerHTML = '<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + response.share_code + '_cf"><img src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></a>'
+          document.getElementById("deploy").innerHTML = '<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + response.share_code + '_cf"><img src="launch-stack.svg"></a>'
           document.getElementById("spinner").style.visibility = "hidden";
           alert("success", "Synth successful");
       }
@@ -128,7 +128,7 @@ function load_cf(hash) {
   xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
           window.output.setValue(this.responseText);
-          document.getElementById("deploy").innerHTML = '<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf"><img src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></a>'
+          document.getElementById("deploy").innerHTML = '<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf"><img src="launch-stack.svg"></a>'
       }
   };
   xhttp.open("GET", "https://play-with-cdk.com/shared/" + hash + '_cf', true);
