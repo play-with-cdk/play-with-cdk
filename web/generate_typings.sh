@@ -10,7 +10,7 @@ echo "exports.alltypes = [" >> typings.js
 for file in `find * \( -name package.json -o -name "*.d.ts" \) -print`
 do
   echo $file
-  echo "{ name: 'file:///$1/$file', value: \`$(cat $file | base64 )\` }," >> typings.js
+  echo "{ name: 'file:///node_modules/@aws-cdk/$file', value: \`$(cat $file | base64 )\` }," >> typings.js
 done
 echo "]" >> typings.js
 popd
