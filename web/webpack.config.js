@@ -7,7 +7,7 @@ module.exports = {
 	entry: {
 		"app": './index.ts',
 		"editor.worker": 'monaco-editor/esm/vs/editor/editor.worker.js',
-		"ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker',
+    "ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker'
     },
     resolve: {
         modules: [ 'node_modules' ],

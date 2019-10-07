@@ -61,13 +61,20 @@ export class AppStack extends cdk.Stack {
 
 
 declare global {
-  interface Window { editor: any; }
+  interface Window { editor: any; output: any; }
 }
 window.editor = window.editor || {};
+window.output = window.output || {};
 
 window.editor = monaco.editor.create(document.getElementById('editor'), {
   // value: ["function x() {", '\tconsole.log("Hello world!");', "}"].join("\n"),
   // language: "typescript",
   model: monaco.editor.createModel(jsCode,"typescript", monaco.Uri.parse("file:///main.tsx")),
   theme: 'vs-dark'
+});
+
+window.output = monaco.editor.create(document.getElementById('output'), {
+  language: "yaml",
+  theme: 'vs-dark',
+  readOnly: true
 });
