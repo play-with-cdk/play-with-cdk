@@ -104,7 +104,7 @@ export class PipelineStack extends Stack {
           },
           build: {
             commands: [
-              'webpack'
+              'npm run build'
             ]
           }
         }, 

@@ -1,0 +1,16 @@
+{
+  "name": "play-with-cdk",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "node_modules/webpack/bin/webpack"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.0.4",
+    "css-loader": "^3.2.0",
+    "monaco-editor": "^0.18.1",
+    "string-replace-loader": "^2.2.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  }
+}
