@@ -2,7 +2,7 @@
   "name": "play-with-cdk",
   "version": "0.1.0",
   "scripts": {
-    "build": "webpack --mode development"
+    "build": "webpack"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.4",
