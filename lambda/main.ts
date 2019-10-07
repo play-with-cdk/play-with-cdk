@@ -63,6 +63,8 @@ export const handler = async (event: any = {}): Promise<any> => {
   }
 
   fs.writeFileSync('/tmp/app-stack.ts', event.body);
+  console.log(require.resolve('/tmp/app-stack'));
+  delete require.cache[require.resolve('/tmp/app-stack')];
 
   try {
     // Load the construct module, compile it, instantiate it, synth it and serialize it as yaml template
@@ -81,7 +83,7 @@ export const handler = async (event: any = {}): Promise<any> => {
     out = execSync('ls -ltrh', {cwd: '/var/task'}).toString();
     console.log(out)
     console.log(fs.readFileSync('/tmp/app-stack.ts', 'utf8'));
-    console.log(fs.readFileSync('/var/task/main.js', 'utf8'));
+    // console.log(fs.readFileSync('/var/task/main.js', 'utf8'));
     console.log(error);
     responseCode = 500;
     responseBody = {
