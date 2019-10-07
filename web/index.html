@@ -95,7 +95,7 @@
                     document.getElementById("spinner").style.visibility = "hidden";
                     try {
                         response = JSON.parse(this.responseText);
-                        alert("danger", response.error + "\n" + JSON.stringify(response.details));
+                        alert("danger", response.error + "\n" + response.details.replace(/(?:\r\n|\r|\n)/g, '<br>'));
                     } catch(err) {
                         alert("danger", this.responseText);
                     }
