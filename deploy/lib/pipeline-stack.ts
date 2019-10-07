@@ -96,13 +96,22 @@ export class PipelineStack extends Stack {
           install: {
             "runtime-versions": {
               nodejs: 10,
-            }
+            },
+            commands: [
+              'cd web',
+              'npm ci'
+            ]
+          },
+          build: {
+            commands: [
+              'webpack'
+            ]
           }
         }, 
         artifacts: {
-          'base-directory': 'web',
+          'base-directory': 'web/dist',
           files: [
-            'index.html'
+            '*'
           ]
         }
       }),

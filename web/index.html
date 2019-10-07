@@ -7,14 +7,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/default.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
-        <!-- <style type="text/css" media="screen">
-            #editor { 
- 
-                width: 100%;
-                height: 90%;
-            }
-        </style> -->
-
         <style>
         html,body {
             height:100%;
@@ -55,28 +47,7 @@
         <div class="container-fluid h-100">
             <div class="row h-75">
                 <div class="col-5">
-                    <div class="h-100" id="editor">import cdk = require('@aws-cdk/core');
-
-// Add required imports, currently only @aws-cdk scoped packages are supported
-import { Bucket } from '@aws-cdk/aws-s3';
-import cloudtrail = require('@aws-cdk/aws-cloudtrail');
-
-// Keep the class name stable please
-export class AppStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
-        super(scope, id, props);
-    
-        // Add your code here
-        var bucket = Bucket.fromBucketName(this, 'CloudTrailBucket', 'mybucket');
-
-        new cloudtrail.Trail(this, 'CloudTrail', {
-        bucket: bucket,
-        isMultiRegionTrail: true
-        });
-
-        // You should stop here
-    }
-}</div>
+                    <div class="h-100" id="editor"></div>
                 </div>
                 <div class="col-2 align-self-start">
                     <center>
@@ -156,14 +127,9 @@ export class AppStack extends cdk.Stack {
             xhttp.send();
         }
     </script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!-- <script>hljs.initHighlightingOnLoad();</script> -->
+    <script src="./app.bundle.js"></script>"
     <script>
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/typescript");
-
         const params = new URLSearchParams(document.location.search);
         const hash = params.get("s");
         if(hash){
