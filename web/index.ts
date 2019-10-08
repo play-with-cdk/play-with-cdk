@@ -1,5 +1,6 @@
 import * as monaco from "monaco-editor";
 import * as alltypes from './typings.js';
+import 'bootstrap';
 
 alltypes.alltypes.forEach(element => {
   var content = atob(element.value);
@@ -60,7 +61,12 @@ window.editor = monaco.editor.create(document.getElementById('editor'), {
   // value: ["function x() {", '\tconsole.log("Hello world!");', "}"].join("\n"),
   // language: "typescript",
   model: monaco.editor.createModel(jsCode,"typescript", monaco.Uri.parse("file:///main.tsx")),
-  theme: 'vs-dark'
+  theme: 'vs-dark',
+  minimap: {
+		enabled: false
+  },
+  fontSize: 20,
+  automaticLayout: true
 });
 
 window.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function() {
@@ -70,7 +76,12 @@ window.editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function(
 window.output = monaco.editor.create(document.getElementById('output'), {
   language: "yaml",
   theme: 'vs-dark',
-  readOnly: true
+  readOnly: true,
+  minimap: {
+		enabled: false
+  },
+  fontSize: 20,
+  automaticLayout: true
 });
 
 
@@ -97,6 +108,8 @@ window.synth = function() {
           document.getElementById("deploy").innerHTML = '<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + response.share_code + '_cf"><img src="launch-stack.svg"></a>'
           document.getElementById("spinner").style.visibility = "hidden";
           alert("success", "Synth successful");
+          //$('#outputModal').modal('show');
+          $('#output').show();
       }
       if (this.readyState == 4 && this.status != 200) {
           document.getElementById("spinner").style.visibility = "hidden";
@@ -118,6 +131,8 @@ function load_cf(hash) {
       if (this.readyState == 4 && this.status == 200) {
           window.output.setValue(this.responseText);
           document.getElementById("deploy").innerHTML = '<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf"><img src="launch-stack.svg"></a>'
+          //$('#outputModal').modal('show');
+          $('#output').show();
       }
   };
   xhttp.open("GET", "https://play-with-cdk.com/shared/" + hash + '_cf', true);

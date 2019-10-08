@@ -27,6 +27,28 @@
             height:100%;
             max-height:100%;
         }
+        .modal-dialog,
+        .modal-content {
+            /* 80% of window height */
+            height: 80vh;
+        }
+        .modal-body {
+            max-height: calc(100vh - 143px);
+            overflow-y: auto;
+        }
+        .console-close {
+            position: fixed;
+            margin-top: 16px;
+            cursor: pointer;
+            margin-right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #27282c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpolygon fill='%23fff' class='data-fill' points='20.207 5.207 18.793 3.793 12 10.586 5.207 3.793 3.793 5.207 10.586 12 3.793 18.793 5.207 20.207 12 13.414 18.793 20.207 20.207 18.793 13.414 12 20.207 5.207' opacity='0.2' /%3E %3C/svg%3E") center center no-repeat;
+            z-index: 1;
+            right: 0px;
+            color: #000000
+        }
     </style>
 
     </head>
@@ -61,7 +83,7 @@
         </nav>
         <div class="container-fluid h-100">
             <div class="row h-75">
-                <div class="col-5">
+                <div class="col-10">
                     <div class="h-100" id="editor"></div>
                 </div>
                 <div class="col-2 align-self-start">
@@ -69,22 +91,43 @@
                         <button type="button" class="btn btn-primary" onclick="synth()">
                             Synth
                             <span class="spinner-grow spinner-grow-sm" id="spinner" role="status" aria-hidden="true" style="visibility: hidden"></span>
-                        </button>
+                        </button><br/>
+                        <!-- <a class="btn btn-primary" data-toggle="modal" href="#outputModal" role="button" aria-expanded="false" aria-controls="outputModal"> -->
+                        <a class="btn btn-primary mt-3" role="button" onclick="$('#output').toggle();">
+                            Toggle output
+                            </a>
                         <div class="mt-3" id="share_code"></div>
                         <div class="mt-3" id="deploy"></div>
                     </center>
                 </div>
-                <div class="col-5">
-                    <div class="h-100" id="output"></div>
-                </div>
             </div>
             <div class="row">
                 <div class="col">
-                        <div class="alert alert-primary" id="alert" role="alert">
-                                Hello!
-                        </div>
+                    <div class="alert alert-primary" id="alert" role="alert">
+                            Hello!
+                    </div>
                 </div>
             </div>
         </div> 
+        <div class="fixed-bottom zindex-popover bg-secondary h-50" id="output" style="display:none; opacity:0.95">
+            <div class="console-close" onclick="$('#output').hide();"></div>
+        </div>
+<!-- 
+        <div class="modal fade" id="outputModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="output">
+                        </div>
+                    </div>
+            </div>
+        </div> -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </body>
 </html>
