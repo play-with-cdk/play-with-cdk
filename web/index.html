@@ -27,18 +27,22 @@
             height:100%;
             max-height:100%;
         }
-        .console-close {
+
+        .overlay {
             position: fixed;
             margin-top: 16px;
-            cursor: pointer;
             margin-right: 30px;
+            z-index: 1;
+            right: 0px;
+        }
+
+        .console-close {
             width: 48px;
             height: 48px;
             border-radius: 50%;
             background: #27282c url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpolygon fill='%23fff' class='data-fill' points='20.207 5.207 18.793 3.793 12 10.586 5.207 3.793 3.793 5.207 10.586 12 3.793 18.793 5.207 20.207 12 13.414 18.793 20.207 20.207 18.793 13.414 12 20.207 5.207' opacity='0.2' /%3E %3C/svg%3E") center center no-repeat;
-            z-index: 1;
-            right: 0px;
-            color: #000000
+            color: #000000;
+            cursor: pointer;
         }
     </style>
 
@@ -60,21 +64,22 @@
         </nav>
         <div class="container-fluid h-100">
             <div class="row h-75">
-                <div class="col-10">
-                    <div class="h-100" id="editor"></div>
-                </div>
-                <div class="col-2 align-self-start">
-                    <center>
-                        <button type="button" class="btn btn-primary" onclick="synth()">
-                            Synth
-                            <span class="spinner-grow spinner-grow-sm" id="spinner" role="status" aria-hidden="true" style="visibility: hidden"></span>
-                        </button><br/>
-                        <button type="button" class="btn btn-primary mt-3" onclick="$('#output').toggle();">
-                            Toggle output
-                        </button>
-                        <div class="mt-3" id="share_code"></div>
-                        <div class="mt-3" id="deploy"></div>
-                    </center>
+                <div class="col-12">
+                    <div class="h-100" id="editor">
+                        <div class="overlay align-self-start">
+                            <center>
+                                <button type="button" class="btn btn-primary" onclick="synth()">
+                                    Synth
+                                    <span class="spinner-grow spinner-grow-sm" id="spinner" role="status" aria-hidden="true" style="visibility: hidden"></span>
+                                </button><br/>
+                                <button type="button" class="btn btn-primary mt-3" onclick="$('#output').toggle();">
+                                    Toggle output
+                                </button>
+                                <div class="mt-3" id="share_code"></div>
+                                <div class="mt-3" id="deploy"></div>
+                            </center>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -86,7 +91,7 @@
             </div>
         </div> 
         <div class="fixed-bottom zindex-popover bg-secondary h-50" id="output" style="display:none; opacity:0.95">
-            <div class="console-close" onclick="$('#output').hide();"></div>
+            <div class="overlay console-close" onclick="$('#output').hide();"></div>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
