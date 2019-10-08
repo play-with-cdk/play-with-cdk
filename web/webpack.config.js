@@ -34,7 +34,7 @@ module.exports = {
           algorithm: 'brotliCompress',
           test: /\.js$/,
           compressionOptions: { level: 11 },
-          threshold: 10240,
+          minRatio: 1,
           deleteOriginalAssets: false,
         }),
         new CleanWebpackPlugin(),
