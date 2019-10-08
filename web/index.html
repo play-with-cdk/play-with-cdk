@@ -27,15 +27,6 @@
             height:100%;
             max-height:100%;
         }
-        .modal-dialog,
-        .modal-content {
-            /* 80% of window height */
-            height: 80vh;
-        }
-        .modal-body {
-            max-height: calc(100vh - 143px);
-            overflow-y: auto;
-        }
         .console-close {
             position: fixed;
             margin-top: 16px;
@@ -64,20 +55,6 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li> -->
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li> -->
                 </ul>
             </div>
         </nav>
@@ -92,7 +69,6 @@
                             Synth
                             <span class="spinner-grow spinner-grow-sm" id="spinner" role="status" aria-hidden="true" style="visibility: hidden"></span>
                         </button><br/>
-                        <!-- <a class="btn btn-primary" data-toggle="modal" href="#outputModal" role="button" aria-expanded="false" aria-controls="outputModal"> -->
                         <a class="btn btn-primary mt-3" role="button" onclick="$('#output').toggle();">
                             Toggle output
                             </a>
@@ -112,20 +88,6 @@
         <div class="fixed-bottom zindex-popover bg-secondary h-50" id="output" style="display:none; opacity:0.95">
             <div class="console-close" onclick="$('#output').hide();"></div>
         </div>
-<!-- 
-        <div class="modal fade" id="outputModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-xl" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="output">
-                        </div>
-                    </div>
-            </div>
-        </div> -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
