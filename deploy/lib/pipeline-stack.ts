@@ -107,8 +107,9 @@ export class PipelineStack extends Stack {
             commands: [
               './generate_typings.sh',
               'npm run build',
-              'aws s3 sync dist/br s3://play-with-cdk.com/ --exclude "*" --include "*.js" --content-type "application/javascript" --content-encoding "br"',
-              'aws s3 sync dist s3://play-with-cdk.com/ --exclude "*.js"'
+              'aws s3 sync dist/br s3://play-with-cdk.com/ --exclude "*" --include "*.bundle.js" --content-type "application/javascript" --content-encoding "br" --cache-control max-age=31536000,public --acl public-read',
+              'aws s3 sync dist/br s3://play-with-cdk.com/ --exclude "*" --include "*.worker.js" --content-type "application/javascript" --content-encoding "br" --cache-control max-age=300,public --acl public-read',
+              'aws s3 sync dist s3://play-with-cdk.com/ --exclude "*.js" --cache-control max-age=300,public --acl public-read'
             ]
           }
         }
