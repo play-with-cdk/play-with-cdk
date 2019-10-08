@@ -1,6 +1,8 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -16,7 +18,7 @@ module.exports = {
       },
 	output: {
 		globalObject: 'self',
-		filename: '[name].bundle.js',
+		filename: '[name].[contenthash].bundle.js',
 		path: path.resolve(__dirname, 'dist')
     },
     node: {
@@ -26,18 +28,23 @@ module.exports = {
     },
     plugins: [
         new CopyPlugin([
-          { from: 'index.html' },
           { from: 'launch-stack.svg' }
         ]),
         new CompressionPlugin({
-          filename: '[path].br[query]',
+          filename: 'br/[path][query]',
           algorithm: 'brotliCompress',
           test: /\.js$/,
           compressionOptions: { level: 11 },
           threshold: 10240,
-          minRatio: 0.8,
-          deleteOriginalAssets: true,
+          // minRatio: 0.8,
+          deleteOriginalAssets: false,
         }),
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+          inject: true,
+          template: 'index.html',
+          chunks: ['app'],
+        })
       ],
 	module: {
 		rules: [

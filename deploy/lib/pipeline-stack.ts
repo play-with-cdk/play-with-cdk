@@ -107,8 +107,8 @@ export class PipelineStack extends Stack {
             commands: [
               './generate_typings.sh',
               'npm run build',
-              'aws s3 sync dist s3://play-with-cdk.com/ --exclude "*" --include "*.js.br" --content-type "application/javascript" --content-encoding "br"',
-              'aws s3 sync dist s3://play-with-cdk.com/ --exclude "*.js.br"'
+              'aws s3 sync dist/br s3://play-with-cdk.com/ --exclude "*" --include "*.js" --content-type "application/javascript" --content-encoding "br"',
+              'aws s3 sync dist s3://play-with-cdk.com/ --exclude "*.js"'
             ]
           }
         }
