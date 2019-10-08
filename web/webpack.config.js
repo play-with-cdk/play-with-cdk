@@ -10,8 +10,6 @@ module.exports = {
   target: 'web',
   entry: {
 		"app": './index.ts',
-		// "editor.worker": 'monaco-editor/esm/vs/editor/editor.worker.js',
-    // "ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker'
     },
     resolve: {
         modules: [ 'node_modules' ],
@@ -37,10 +35,9 @@ module.exports = {
           test: /\.js$/,
           compressionOptions: { level: 11 },
           threshold: 10240,
-          // minRatio: 0.8,
           deleteOriginalAssets: false,
         }),
-        new CleanWebpackPlugin(        ),
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
           inject: true,
           template: 'index.html',
