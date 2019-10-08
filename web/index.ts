@@ -1,15 +1,4 @@
 import * as monaco from "monaco-editor";
-
-// @ts-ignore
-self.MonacoEnvironment = {
-  getWorkerUrl: function(moduleId, label) {
-    if (label === "typescript" || label === "javascript") {
-      return "./ts.worker.bundle.js";
-    }
-    return "./editor.worker.bundle.js";
-  }
-};
-
 import * as alltypes from './typings.js';
 
 alltypes.alltypes.forEach(element => {

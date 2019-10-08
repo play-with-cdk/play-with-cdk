@@ -3,14 +3,15 @@ const CopyPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   target: 'web',
   entry: {
 		"app": './index.ts',
-		"editor.worker": 'monaco-editor/esm/vs/editor/editor.worker.js',
-    "ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker'
+		// "editor.worker": 'monaco-editor/esm/vs/editor/editor.worker.js',
+    // "ts.worker": 'monaco-editor/esm/vs/language/typescript/ts.worker'
     },
     resolve: {
         modules: [ 'node_modules' ],
@@ -39,12 +40,28 @@ module.exports = {
           // minRatio: 0.8,
           deleteOriginalAssets: false,
         }),
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin(        ),
         new HtmlWebpackPlugin({
           inject: true,
           template: 'index.html',
-          chunks: ['app'],
-        })
+          chunks: ['runtime', 'app'],
+        }),
+        new MonacoWebpackPlugin({
+          languages: ['typescript'],
+          features: [
+              'bracketMatching',
+              'clipboard',
+              'coreCommands',
+              'cursorUndo',
+              'find',
+              'format',
+              'hover',
+              'inPlaceReplace',
+              'iPadShowKeyboard',
+              'links',
+              'suggest',
+          ],
+      }),
       ],
 	module: {
 		rules: [
@@ -66,5 +83,9 @@ module.exports = {
               flags: 'g'
             }
         }]
+  },
+  optimization: {
+    moduleIds: 'hashed',
+    runtimeChunk: 'single'
   }
 };
