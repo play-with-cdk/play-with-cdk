@@ -97,8 +97,11 @@ if(hash){
 }
 
 function alert(type, message){
-  document.getElementById("alert").classList.value = "alert alert-" + type;
-  document.getElementById("alert").innerHTML = message.replace(/\n/g, "<br />");
+  $('#output').hide();
+  $('#alertmsg').removeClass();
+  $('#alertmsg').addClass('text-' + type);
+  $("#alertmsg").html(message.replace(/\n/g, "<br />"));
+  $('#alert').show();
 }
 
 window.synth = function() {
@@ -113,16 +116,16 @@ window.synth = function() {
           $('#deploy_link').show();
           $("#share_code").attr('onclick', 'copyToClipboard("https://play-with-cdk.com?s=' + response.share_code + '");');
           $("#spinner").hide();
-          alert("success", "Synth successful");
+          $('#alert').hide();
           $('#output').show();
       }
       if (this.readyState == 4 && this.status != 200) {
           $("#spinner").hide();
           try {
               const response = JSON.parse(this.responseText);
-              alert("danger", response.error + "\n" + response.details.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+              alert("danger", '&#128580 ' + response.error + "\n" + response.details.replace(/(?:\r\n|\r|\n)/g, '<br>'));
           } catch(err) {
-              alert("danger", this.responseText);
+              alert("danger", '&#128580 ' + this.responseText);
           }
       }
   };
@@ -144,8 +147,7 @@ function load_cf(hash) {
   xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
           window.output.setValue(this.responseText);
-          document.getElementById("deploy").innerHTML = '<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf"><img src="launch-stack.svg"></a>'
-          //$('#outputModal').modal('show');
+          $("#deploy").html('<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf"><img src="launch-stack.svg"></a>');
           $('#output').show();
       }
   };
@@ -158,7 +160,7 @@ function load_code(hash) {
   xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
           window.editor.setValue(this.responseText);
-          document.getElementById("share_code").innerHTML = '<a href="https://play-with-cdk.com?s=' + hash + '">share</a>'
+          $("#share_code").html('<a href="https://play-with-cdk.com?s=' + hash + '">share</a>');
       }
   };
   xhttp.open("GET", "https://play-with-cdk.com/shared/" + hash + '_code', true);
