@@ -51,11 +51,12 @@ export class AppStack extends cdk.Stack {
 
 
 declare global {
-  interface Window { editor: any; output: any; synth: any; }
+  interface Window { editor: any; output: any; synth: any; copyToClipboard: any;}
 }
 window.editor = window.editor || {};
 window.output = window.output || {};
 window.synth = window.synth || {};
+window.copyToClipboard = window.copyToClipboard || {};
 
 window.editor = monaco.editor.create(document.getElementById('editor'), {
   // value: ["function x() {", '\tconsole.log("Hello world!");', "}"].join("\n"),
@@ -84,6 +85,9 @@ window.output = monaco.editor.create(document.getElementById('output'), {
   automaticLayout: true
 });
 
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 
 const params = new URLSearchParams(document.location.search);
 const hash = params.get("s");
@@ -98,21 +102,22 @@ function alert(type, message){
 }
 
 window.synth = function() {
-  document.getElementById("spinner").style.visibility = "visible"
+  $("#spinner").show();
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
           const response = JSON.parse(this.responseText);
           window.output.setValue(response.cf_template);
-          document.getElementById("share_code").innerHTML = '<a href="https://play-with-cdk.com?s=' + response.share_code + '">share</a>'
-          document.getElementById("deploy").innerHTML = '<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + response.share_code + '_cf"><img src="launch-stack.svg"></a>'
-          document.getElementById("spinner").style.visibility = "hidden";
+          $('#share_code').show();
+          $('#deploy_link').attr('href', 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + response.share_code + '_cf');
+          $('#deploy_link').show();
+          $("#share_code").attr('onclick', 'copyToClipboard("https://play-with-cdk.com?s=' + response.share_code + '");');
+          $("#spinner").hide();
           alert("success", "Synth successful");
-          //$('#outputModal').modal('show');
           $('#output').show();
       }
       if (this.readyState == 4 && this.status != 200) {
-          document.getElementById("spinner").style.visibility = "hidden";
+          $("#spinner").hide();
           try {
               const response = JSON.parse(this.responseText);
               alert("danger", response.error + "\n" + response.details.replace(/(?:\r\n|\r|\n)/g, '<br>'));
@@ -123,6 +128,15 @@ window.synth = function() {
   };
   xhttp.open("POST", "https://fvml9pequc.execute-api.eu-west-1.amazonaws.com/prod/synth", true);
   xhttp.send(window.editor.getValue());
+}
+
+window.copyToClipboard = function(text){
+  var inp = document.createElement('input');
+  document.body.appendChild(inp)
+  inp.value = text;
+  inp.select();
+  document.execCommand('copy',false);
+  inp.remove();
 }
 
 function load_cf(hash) {
