@@ -70,6 +70,7 @@ export class Pwcdk extends Stack {
       threshold: 1,
       evaluationPeriods: 1,
       datapointsToAlarm: 1,
+      treatMissingData: TreatMissingData.NOT_BREACHING
     })
 
     lambdaErrorAlert.addAlarmAction(
