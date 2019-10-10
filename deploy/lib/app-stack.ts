@@ -14,8 +14,6 @@ export class Pwcdk extends Stack {
 
     this.lambdaCode = lambda.Code.cfnParameters();
 
-    //const bucket = s3.Bucket.fromBucketName(this, 'Bucket', 'www.play-with-cdk.com');
-
     const bucket = new s3.Bucket(this, 'Bucket', {
       bucketName: 'play-with-cdk.com',
       websiteIndexDocument: 'index.html'
@@ -61,8 +59,8 @@ export class Pwcdk extends Stack {
       restApiName: "pwcdk",
       options: {
         deployOptions:{
-          throttlingRateLimit: 1,
-          throttlingBurstLimit: 1
+          throttlingRateLimit: 100,
+          throttlingBurstLimit: 100
         }
       }
     });
