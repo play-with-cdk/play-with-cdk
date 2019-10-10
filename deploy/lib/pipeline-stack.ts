@@ -145,7 +145,7 @@ export class PipelineStack extends Stack {
           actions: [
             new codepipeline_actions.GitHubSourceAction({
               actionName: 'GitHub_Source',
-              owner: 'bruecktech',
+              owner: 'play-with-cdk',
               repo: 'play-with-cdk',
               branch: 'master',
               oauthToken: SecretValue.secretsManager('github-token'),
