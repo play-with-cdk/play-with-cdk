@@ -1,27 +1,30 @@
 # play-with-cdk
 
+This is https://play-with-cdk.com  
+It contains a lambda function that provides an API to run `cdk synth` and a little web frontend.
 
-# build client-side variant
-- currently not working because `process.versions.node.split('.')` is failing with `Uncaught TypeError: Cannot read property 'split' of undefined`
 
-```
-cd browser
-npm install -g browserify
-npm ci
-browserify main.ts -t brfs -p [ tsify --noImplicitAny ]  > bundle.js
-```
-then open `index.html` in a browser
-
-# build lambda / web frontend
-- misses infrastructure code for lambda and api gateway lambda proxy, everything done manually so far
-- slow because spawning `cdk synth` in a lambda is slow
+## Deploying
 
 ```
-cd lambda
-npm ci
-docker run --rm -v ${PWD}:/app hochzehn/node-prune
-npm run-script build
-zip -q -r ../lambda.zip .
+cd deploy/
+cdk deploy pwcdk-pipeline
 ```
 
-upload web/index.html to some bucket
+## Run web frontend locally
+```
+cd web/
+npm run build && npm run serve
+```
+
+## Contributing
+
+We are happy to accept PRs.
+
+## Authors
+- [Johannes Brück](https://github.com/bruecktech)
+- [Philipp Garbe](https://github.com/pgarbe)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
