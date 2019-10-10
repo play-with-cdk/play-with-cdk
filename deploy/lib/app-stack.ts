@@ -6,7 +6,7 @@ import { App, Stack, StackProps, Duration } from '@aws-cdk/core';
 import { ImagePullPrincipalType } from '@aws-cdk/aws-codebuild';
 import { PolicyStatement, AccountRootPrincipal } from '@aws-cdk/aws-iam';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import { Metric } from '@aws-cdk/aws-cloudwatch';
+import { Metric, TreatMissingData } from '@aws-cdk/aws-cloudwatch';
 import * as sns from '@aws-cdk/aws-sns';
 import * as subs from '@aws-cdk/aws-sns-subscriptions';
 import * as cloudwatch_actions from '@aws-cdk/aws-cloudwatch-actions';
@@ -109,7 +109,8 @@ export class Pwcdk extends Stack {
       }),
       threshold: 1,
       evaluationPeriods: 1,
-      datapointsToAlarm: 1
+      datapointsToAlarm: 1,
+      treatMissingData: TreatMissingData.NOT_BREACHING
     });
 
     api5XXErrorAlert.addAlarmAction(
