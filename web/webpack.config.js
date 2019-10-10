@@ -4,7 +4,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-var cdkVersion = require('../lambda/node_modules/@aws-cdk/core/package.json').version;
+var cdkVersion = require('../lambda/package-lock.json').dependencies['@aws-cdk/core'].version;
 
 module.exports = {
   mode: 'development',
