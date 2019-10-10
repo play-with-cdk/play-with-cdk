@@ -9,7 +9,6 @@ alltypes.alltypes.forEach(element => {
   monaco.languages.typescript.typescriptDefaults.addExtraLib(content, name);
 });
 
-
 monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
 	noSemanticValidation: false,
 	noSyntaxValidation: false
@@ -18,13 +17,10 @@ monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
 monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   target: monaco.languages.typescript.ScriptTarget.ES2016,
   allowNonTsExtensions: true,
-  // module: monaco.languages.typescript.ModuleKind.CommonJS,
   moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
   noEmit: true,
   lib: [ 'es6' ]
 });
-
-//monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
 
 var jsCode = `import * as cdk from '@aws-cdk/core';
 
@@ -59,8 +55,6 @@ window.synth = window.synth || {};
 window.copyToClipboard = window.copyToClipboard || {};
 
 window.editor = monaco.editor.create(document.getElementById('editor'), {
-  // value: ["function x() {", '\tconsole.log("Hello world!");', "}"].join("\n"),
-  // language: "typescript",
   model: monaco.editor.createModel(jsCode,"typescript", monaco.Uri.parse("file:///main.tsx")),
   theme: 'vs-dark',
   minimap: {
@@ -94,6 +88,8 @@ const hash = params.get("s");
 if(hash){
     load_code(hash);
     load_cf(hash);
+    $('#deploy_link').attr('href', 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf');
+    $('#deploy_link').show();
 }
 
 function alert(type, message){
@@ -111,10 +107,14 @@ window.synth = function() {
       if (this.readyState == 4 && this.status == 200) {
           const response = JSON.parse(this.responseText);
           window.output.setValue(response.cf_template);
-          $('#share_code').show();
           $('#deploy_link').attr('href', 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + response.share_code + '_cf');
+          $('#sharing_twitter').attr('href', 'https://twitter.com/intent/tweet/?text=Look%20at%20my%20awesome%20CDK%20code&url=https%3A%2F%2Fplay-with-cdk.com?s=' + response.share_code);
+          $('#sharing_email').attr('href', 'mailto:?subject=Look%20at%20my%20awesome%20CDK%20code&body=https%3A%2F%2Fplay-with-cdk.com?s=' + response.share_code);
+          $('#sharing_reddit').attr('href', 'https://reddit.com/submit/?resubmit=true&title=Look%20at%20my%20awesome%20CDK%20code&url=https%3A%2F%2Fplay-with-cdk.com?s=' + response.share_code);
+          $('#sharing_hackernews').attr('href', 'https://news.ycombinator.com/submitlink?t=Look%20at%20my%20awesome%20CDK%20code&u=https%3A%2F%2Fplay-with-cdk.com?s=' + response.share_code);
+          $("#sharing_clipboard").on('click', function(e) { window.copyToClipboard('https://play-with-cdk.com?s=' + response.share_code) });
+          $('#share_code').show();
           $('#deploy_link').show();
-          $("#share_code").attr('onclick', 'copyToClipboard("https://play-with-cdk.com?s=' + response.share_code + '");');
           $("#spinner").hide();
           $('#alert').hide();
           $('#output').show();
@@ -133,13 +133,16 @@ window.synth = function() {
   xhttp.send(window.editor.getValue());
 }
 
-window.copyToClipboard = function(text){
-  var inp = document.createElement('input');
-  document.body.appendChild(inp)
-  inp.value = text;
-  inp.select();
-  document.execCommand('copy',false);
-  inp.remove();
+window.copyToClipboard = function(text: string){
+  try{
+    var $temp = $("<input>");
+    $("#sharing_clipboard").append($temp);
+    $temp.val(text).select();
+    var retVal = document.execCommand("copy");
+    $temp.remove();
+  } catch(err) {
+    console.log('Error while copying to clipboard: ' + err);
+  }
 }
 
 function load_cf(hash) {
