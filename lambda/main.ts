@@ -47,9 +47,16 @@ export const handler = async (event: any = {}): Promise<any> => {
   console.log(JSON.stringify(report));
 
   if (report.errorCount > 0){
-    responseBody = {
-      error: "Failed security check",
-      details: "Line " + report.results[0].messages[0].line + ": " + report.results[0].messages[0].message
+    if (report.results[0].messages[0].ruleId === null){
+      responseBody = {
+        error: "Failed check",
+        details: "Line " + report.results[0].messages[0].line + ": " + report.results[0].messages[0].message
+      }
+    } else {
+      responseBody = {
+        error: "Failed security check",
+        details: "Line " + report.results[0].messages[0].line + ": " + report.results[0].messages[0].message
+      }
     }
 
     const response = {
