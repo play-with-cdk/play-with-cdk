@@ -122,7 +122,10 @@ export class PipelineStack extends Stack {
     const websiteBucket = s3.Bucket.fromBucketName(this, 'WebsiteBucket', 'play-with-cdk.com');
 
     websiteBuildDeploy.addToRolePolicy(new PolicyStatement({
-      actions: ['s3:PutObject'],
+      actions: [
+        's3:PutObject',
+        's3:PutObjectAcl',
+      ],
       resources: [ websiteBucket.bucketArn + '/*' ],
       effect: Effect.ALLOW
     }))
