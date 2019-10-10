@@ -103,7 +103,8 @@ export class Pwcdk extends Stack {
         namespace: 'ApiGateway',
         metricName: '5XXError',
         dimensions: {
-          ApiName: 'pwcdk'
+          ApiName: 'pwcdk',
+          Stage: 'prod'
         }
       }),
       threshold: 1,
