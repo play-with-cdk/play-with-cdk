@@ -17,6 +17,16 @@ cd web/
 npm run build && npm run serve
 ```
 
+## Built With
+
+* AWS API gateway, Lambda, S3, CloudFront, CodePipeline, CodeBuild, CodeDeploy
+* [typescript](http://www.typescriptlang.org/)
+* [monaco-editor](https://microsoft.github.io/monaco-editor/) - The editor that powers VS Code
+* [node-prune](https://github.com/tuananh/node-prune) - Squeezing all of @aws-cdk into a lambda function
+* [webpack](https://webpack.js.org/) - Building the frontend
+* [bootstrap](https://getbootstrap.com/) - Frontend
+
+
 ## Contributing
 
 We are happy to accept PRs.
