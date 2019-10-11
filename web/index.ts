@@ -101,7 +101,7 @@ function alert(type, message){
 }
 
 window.synth = function() {
-  if (monaco.editor.getModelMarkers({resource: window.editor.getModel().uri }).filter(m => m.severity == 8).length > 0){
+  if (monaco.editor.getModelMarkers({resource: window.editor.getModel().uri }).filter(m => m.severity == monaco.MarkerSeverity.Error).length > 0){
     alert("danger", "&#128580 Cannot synth due to errors. Check the hints in the editor");
     return;
   }
