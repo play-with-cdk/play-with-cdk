@@ -168,7 +168,6 @@ function load_code(hash) {
   xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
           window.editor.setValue(this.responseText);
-          $("#share_code").html('<a href="https://play-with-cdk.com?s=' + hash + '">share</a>');
       }
   };
   xhttp.open("GET", "https://play-with-cdk.com/shared/" + hash + '_code', true);

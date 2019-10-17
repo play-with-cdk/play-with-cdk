@@ -4,10 +4,11 @@ This is https://play-with-cdk.com
 It contains a lambda function that provides an API to run `cdk synth` and a little web frontend.
 
 
-## Deploying
+## Deploying the pipeline
 
 ```
 cd deploy/
+npm ci
 cdk deploy pwcdk-pipeline
 ```
 
