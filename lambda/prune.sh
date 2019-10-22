@@ -22,6 +22,7 @@ echo "Files: "$(find node_modules/ -type f | wc -l)
 find . -type d -name node_modules -prune -exec find {} -type f \( \
     -iname Makefile -or \
     -iname README -or \
+    -iname NOTICE -or \
     -iname README.md -or \
     -iname CHANGELOG -or \
     -iname CHANGELOG.md -or \
@@ -68,6 +69,8 @@ find . -type d -name node_modules -prune -exec find {} -type f \( \
     -name "*.vcxproj.filters" -or \
     \( -name '*.ts' -and \! -name '*.d.ts' \) -or \
     -name "*.jst" -or \
+    -name "*.jsii" -or \
+    -name "*.map" -or \
     -name "*.coffee" \
   \) -print0 \; | xargs -0 rm -rf
 
@@ -77,6 +80,7 @@ find . -type d -name node_modules -prune -exec find {} -type d \( \
     -name test -or \
     -name tests -or \
     -name powered-test -or \
+    -name dist -or \
     -name docs -or \
     -name doc -or \
     -name website -or \
