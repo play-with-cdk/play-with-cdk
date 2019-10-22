@@ -71,7 +71,8 @@ find . -type d -name node_modules -prune -exec find {} -type f \( \
     -name "*.jst" -or \
     -name "*.jsii" -or \
     -name "*.map" -or \
-    -name "*.coffee" \
+    -name "*.coffee" -or \
+    -ipath "*/aws-sdk/dist/*" \
   \) -print0 \; | xargs -0 rm -rf
 
 # Common unneeded directories
@@ -80,7 +81,6 @@ find . -type d -name node_modules -prune -exec find {} -type d \( \
     -name test -or \
     -name tests -or \
     -name powered-test -or \
-    -name dist -or \
     -name docs -or \
     -name doc -or \
     -name website -or \
