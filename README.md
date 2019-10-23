@@ -18,6 +18,16 @@ cd web/
 npm run build && npm run serve
 ```
 
+## Bump CDK version
+```
+cd lambda/
+npm update
+./gen_package_list.py > cdk-packages.txt
+git add .
+git commit -m "Bump CDK version"
+git push
+```
+
 ## Built With
 
 * AWS API gateway, Lambda, S3, CloudFront, CodePipeline, CodeBuild, CodeDeploy
