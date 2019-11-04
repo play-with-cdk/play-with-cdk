@@ -6,7 +6,7 @@ const app = new App();
 
 const appStack = new Pwcdk(app, 'pwcdk');
 new PipelineStack(app, 'pwcdk-pipeline', {
-  lambdaCode: appStack.lambdaCode,
+  lambdaCode: appStack.lambdaCode
 });
 
 app.synth();

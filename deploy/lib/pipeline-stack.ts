@@ -2,18 +2,40 @@ import codebuild = require('@aws-cdk/aws-codebuild');
 import codepipeline = require('@aws-cdk/aws-codepipeline');
 import codepipeline_actions = require('@aws-cdk/aws-codepipeline-actions');
 import lambda = require('@aws-cdk/aws-lambda');
-import s3 = require('@aws-cdk/aws-s3');
-import { App, Stack, StackProps, SecretValue, PhysicalName, RemovalPolicy } from '@aws-cdk/core';
-import { Bucket } from '@aws-cdk/aws-s3';
+import { App, Stack, StackProps, SecretValue, PhysicalName, RemovalPolicy, IAspect, IConstruct, Tokenization } from '@aws-cdk/core';
 import { PolicyStatement, Effect } from '@aws-cdk/aws-iam';
 
+import * as foobar from 'foobar';
+import * as s3 from '@aws-cdk/aws-s3';
 export interface PipelineStackProps extends StackProps {
   readonly lambdaCode: lambda.CfnParametersCode;
 }
 
+// export class ComplianceTests implements IAspect  {
+
+//   public visit(node: IConstruct) : void {
+//     if(node.constructor.name == "CfnBucket"){
+//       console.log(node instanceof s3.CfnBucket)
+//       console.log(Object.getPrototypeOf(s3.CfnBucket))
+//       console.log(Object.getPrototypeOf(node))
+//     }
+//     if (node instanceof s3.CfnBucket){
+//       node.node.addError('No unencrypted buckets are allowed');
+//       if (!node.bucketEncryption 
+//          || (!Tokenization.isResolvable(node.bucketEncryption)
+//             && node.bucketEncryption.serverSideEncryptionConfiguration === [])) {
+//         node.node.addError('No unencrypted buckets are allowed');
+//       }
+//     }  
+//   }
+// }
+
 export class PipelineStack extends Stack {
   constructor(app: App, id: string, props: PipelineStackProps) {
     super(app, id, props);
+
+    this.node.applyAspect(new foobar.ComplianceTests())
+    // this.node.applyAspect(new ComplianceTests())
 
     const artifactBucket = new s3.Bucket(this, 'ArtifactBucket', {
       bucketName: PhysicalName.GENERATE_IF_NEEDED,
