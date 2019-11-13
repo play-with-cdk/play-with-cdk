@@ -19,7 +19,7 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   allowNonTsExtensions: true,
   moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
   noEmit: true,
-  lib: [ 'es6' ]
+  lib: [ 'commonjs' ]
 });
 
 var jsCode = `import * as cdk from '@aws-cdk/core';
