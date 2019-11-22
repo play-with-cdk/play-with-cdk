@@ -88,7 +88,7 @@ const hash = params.get("s");
 if(hash){
     load_code(hash);
     load_cf(hash);
-    $('#deploy_link').attr('href', 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf');
+    $('#deploy_link').attr('href', 'https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf');
     $('#deploy_link').show();
 }
 
@@ -112,7 +112,7 @@ window.synth = function() {
       if (this.readyState == 4 && this.status == 200) {
           const response = JSON.parse(this.responseText);
           window.output.setValue(response.cf_template);
-          $('#deploy_link').attr('href', 'https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + response.share_code + '_cf');
+          $('#deploy_link').attr('href', 'https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + response.share_code + '_cf');
           $('#sharing_twitter').attr('href', 'https://twitter.com/intent/tweet/?text=Look%20at%20my%20awesome%20CDK%20code&url=https%3A%2F%2Fplay-with-cdk.com?s=' + response.share_code);
           $('#sharing_email').attr('href', 'mailto:?subject=Look%20at%20my%20awesome%20CDK%20code&body=https%3A%2F%2Fplay-with-cdk.com?s=' + response.share_code);
           $('#sharing_reddit').attr('href', 'https://reddit.com/submit/?resubmit=true&title=Look%20at%20my%20awesome%20CDK%20code&url=https%3A%2F%2Fplay-with-cdk.com?s=' + response.share_code);
@@ -155,7 +155,7 @@ function load_cf(hash) {
   xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
           window.output.setValue(this.responseText);
-          $("#deploy").html('<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf"><img src="launch-stack.svg"></a>');
+          $("#deploy").html('<a target="_blank" href="https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=myteststack&templateURL=https://s3-eu-west-1.amazonaws.com/play-with-cdk.com/shared/' + hash + '_cf"><img src="launch-stack.svg"></a>');
           $('#output').show();
       }
   };
