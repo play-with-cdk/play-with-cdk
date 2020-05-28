@@ -3,7 +3,9 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as process from 'process';
 import crypto = require('crypto');
-import { S3 } from 'aws-sdk';
+import { S3Client } from '@aws-sdk/client-s3-node';
+import { PutObjectCommand } from '@aws-sdk/client-s3-node';
+
 import serialize = require('./lib/serialize');
 
 fs.copyFileSync('work/tsconfig.json.tmpl','/tmp/tsconfig.json');
@@ -12,7 +14,7 @@ if (!fs.existsSync('/tmp/node_modules')){
   fs.symlinkSync(process.cwd() + '/node_modules', '/tmp/node_modules')
 }
 
-const s3 = new S3();
+const s3 = new S3Client({});
 require('ts-node').register({ })
 
 export const handler = async (event: any = {}): Promise<any> => {
@@ -131,8 +133,8 @@ export const handler = async (event: any = {}): Promise<any> => {
   }
 
   try {
-    await s3.putObject(params_cf).promise();
-    await s3.putObject(params_code).promise();
+    await s3.send(new PutObjectCommand(params_cf));
+    await s3.send(new PutObjectCommand(params_code));
   } catch (error){
     console.log(error);
     responseCode = 500;
