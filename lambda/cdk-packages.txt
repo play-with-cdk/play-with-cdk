@@ -27,6 +27,7 @@
 @aws-cdk/aws-chatbot
 @aws-cdk/aws-cloud9
 @aws-cdk/aws-cloudformation
+@aws-cdk/aws-cloudfront-origins
 @aws-cdk/aws-cloudfront
 @aws-cdk/aws-cloudtrail
 @aws-cdk/aws-cloudwatch-actions
@@ -93,6 +94,7 @@
 @aws-cdk/aws-lambda-destinations
 @aws-cdk/aws-lambda-event-sources
 @aws-cdk/aws-lambda-nodejs
+@aws-cdk/aws-lambda-python
 @aws-cdk/aws-lambda
 @aws-cdk/aws-logs-destinations
 @aws-cdk/aws-logs
@@ -152,4 +154,5 @@
 @aws-cdk/custom-resources
 @aws-cdk/cx-api
 @aws-cdk/example-construct-library
+@aws-cdk/pipelines
 @aws-cdk/region-info
