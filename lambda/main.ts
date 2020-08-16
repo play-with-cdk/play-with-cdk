@@ -79,6 +79,7 @@ export const handler = async (event: any = {}): Promise<any> => {
     let mod = require('/tmp/app-stack');
     const app = new cdk.App();
     new mod.AppStack(app, 'AppStack');
+    console.log("Aspects: " + cdk.Aspects.of(app).aspects);
     const assembly = app.synth();
     cf_template = serialize.toYAML(assembly.getStackByName('AppStack').template);
 
