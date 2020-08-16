@@ -27,9 +27,11 @@ module.exports = {
         process: true
     },
     plugins: [
-        new CopyPlugin([
-          { from: 'launch-stack.svg' }
-        ]),
+        new CopyPlugin({
+          patterns: [
+            {from: 'launch-stack.svg'}
+          ],
+        }),
         new CompressionPlugin({
           filename: 'br/[path][query]',
           algorithm: 'brotliCompress',
@@ -83,6 +85,10 @@ module.exports = {
               replace: '\'10.16.3\'',
               flags: 'g'
             }
+        },
+        {
+            test: /\.ttf$/,
+            use: ['file-loader'],
         }]
   },
   optimization: {

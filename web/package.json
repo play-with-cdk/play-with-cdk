@@ -3,26 +3,27 @@
   "version": "0.1.0",
   "scripts": {
     "build": "webpack",
-    "serve": "http-server dist -o"
+    "serve": "ws -d dist -o"
   },
   "devDependencies": {
-    "@types/bootstrap": "^4.3.1",
-    "@types/jquery": "^3.3.31",
-    "bootstrap": "^4.3.1",
+    "@types/bootstrap": "^4.5.0",
+    "@types/jquery": "^3.5.1",
+    "bootstrap": "^4.5.2",
     "clean-webpack-plugin": "^3.0.0",
-    "compression-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^5.0.4",
-    "css-loader": "^3.2.0",
+    "compression-webpack-plugin": "^4.0.1",
+    "copy-webpack-plugin": "^6.0.3",
+    "css-loader": "^3.6.0",
+    "file-loader": "^6.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "http-server": "^0.11.1",
-    "monaco-editor": "^0.18.1",
-    "monaco-editor-webpack-plugin": "^1.7.0",
-    "string-replace-loader": "^2.2.0",
-    "style-loader": "^1.0.0",
-    "ts-loader": "^6.2.0",
-    "typescript": "^3.6.3",
-    "webpack": "^4.41.0",
-    "webpack-cli": "^3.3.9"
+    "local-web-server": "^4.2.1",
+    "monaco-editor": "^0.20.0",
+    "monaco-editor-webpack-plugin": "^1.9.0",
+    "string-replace-loader": "^2.3.0",
+    "style-loader": "^1.2.1",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "jquery": "^3.5.0"
