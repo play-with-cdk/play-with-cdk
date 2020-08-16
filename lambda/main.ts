@@ -8,7 +8,7 @@ import { PutObjectCommand } from '@aws-sdk/client-s3-node';
 
 import serialize = require('./lib/serialize');
 
-fs.copyFileSync('work/tsconfig.json.tmpl','/tmp/tsconfig.json');
+fs.copyFileSync('tsconfig.json','/tmp/tsconfig.json');
 
 if (!fs.existsSync('/tmp/node_modules')){
   fs.symlinkSync(process.cwd() + '/node_modules', '/tmp/node_modules')
@@ -61,14 +61,13 @@ export const handler = async (event: any = {}): Promise<any> => {
       }
     }
 
-    const response = {
+    return {
       statusCode: 403,
       body: JSON.stringify(responseBody),
       headers: {
         "Access-Control-Allow-Origin": '*'
       }
     };
-    return response;
   }
 
   fs.writeFileSync('/tmp/app-stack.ts', event.body);
@@ -81,7 +80,7 @@ export const handler = async (event: any = {}): Promise<any> => {
     const app = new cdk.App();
     new mod.AppStack(app, 'AppStack');
     const assembly = app.synth();
-    cf_template = serialize.toYAML(assembly.getStack('AppStack').template);
+    cf_template = serialize.toYAML(assembly.getStackByName('AppStack').template);
 
     delete require.cache[require.resolve('/tmp/app-stack')]
   } catch (error){
@@ -99,27 +98,26 @@ export const handler = async (event: any = {}): Promise<any> => {
       error: "Error during compile and synth",
       details: error.toString()
     }
-    const response = {
+    return {
       statusCode: responseCode,
       body: JSON.stringify(responseBody),
       headers: {
         "Access-Control-Allow-Origin": '*'
       }
     };
-    return response;
   }
 
   // Generate the md5 hash based on the input code
   let share_code = crypto.createHash('md5').update(event.body).digest('hex');
 
-  var params_cf = {
+  let params_cf = {
     Body: cf_template, 
     Bucket: "play-with-cdk.com", 
     Key: 'shared/' + share_code + '_cf',
     ACL: 'public-read'
   };
 
-  var params_code = {
+  let params_code = {
     Body: event.body, 
     Bucket: "play-with-cdk.com", 
     Key: 'shared/' + share_code + '_code',
