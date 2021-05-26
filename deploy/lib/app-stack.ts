@@ -47,7 +47,7 @@ export class Pwcdk extends Stack {
     const func = new lambda.Function(this, 'Lambda', {
       code: this.lambdaCode,
       handler: 'main.handler',
-      runtime: lambda.Runtime.NODEJS_10_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       timeout: Duration.seconds(60),
       memorySize: 512
     });
